@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "lib.h"
-#include <Windows.h>
-#include <stdlib.h>
 
 void clrscr() {
 	system("cls");
@@ -31,4 +29,9 @@ int wherey() {
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 	return info.dwCursorPosition.Y;
+}
+
+void setColor(WORD color) {
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hStdout, color);
 }

@@ -53,8 +53,6 @@ int MinesChecker(int x, int y) {
 	return q;
 }
 
-
-
 void printer() {
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
@@ -122,7 +120,7 @@ void fail() {
 	clrscr();
 	printer2();
 	cout << endl;
-
+	setColor(RED);
 	cout << " /$$     /$$ /$$$$$$  /$$   /$$       /$$        /$$$$$$   /$$$$$$  /$$$$$$$$" << endl;
 	cout << "|  $$   /$$//$$__  $$| $$  | $$      | $$       /$$__  $$ /$$__  $$| $$_____/" << endl;
 	cout << " \\  $$ /$$/| $$  \\ $$| $$  | $$      | $$      | $$  \\ $$| $$  \\__/| $$      " << endl;
@@ -131,6 +129,7 @@ void fail() {
 	cout << "    | $$   | $$  | $$| $$  | $$      | $$      | $$  | $$ /$$  \\ $$| $$      " << endl;
 	cout << "    | $$   |  $$$$$$/|  $$$$$$/      | $$$$$$$$|  $$$$$$/|  $$$$$$/| $$$$$$$$" << endl;
 	cout << "    |__/    \\______/  \\______/       |________/ \\______/  \\______/ |________/" << endl;
+	setColor(WHITE);
 }
 
 void open(int x, int y) {
@@ -152,6 +151,7 @@ void open(int x, int y) {
 }
 
 void main() {
+	setColor(WHITE);
 	srand(time(NULL));
 	clrscr();
 	for (int y = 0; y < BOARD_SIZE; y++) {
