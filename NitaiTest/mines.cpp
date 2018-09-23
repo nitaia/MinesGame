@@ -6,8 +6,8 @@
 
 using namespace std;
 
-#define BOARD_SIZE 5
-#define NUM_MINES 5
+#define BOARD_SIZE 10
+#define NUM_MINES 10
 #define MINE 9
 #define NO_MINES 0
 #define TMP_NO_MINES 10
