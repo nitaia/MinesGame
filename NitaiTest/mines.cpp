@@ -7,7 +7,7 @@
 using namespace std;
 
 #define BOARD_SIZE 10
-#define NUM_MINES 10
+#define NUM_MINES 1
 #define MINE 9
 #define NO_MINES 0
 #define TMP_NO_MINES 10
@@ -51,6 +51,17 @@ int MinesChecker(int x, int y) {
 	}
 
 	return q;
+}
+
+bool isWin() {
+	for (int y = 0; y < BOARD_SIZE; y++) {
+		for (int x = 0; x < BOARD_SIZE; x++) {
+			if (mines[y][x] != MINE && !opened[y][x]) {
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 void printer() {
@@ -132,6 +143,11 @@ void fail() {
 	setColor(WHITE);
 }
 
+void win() {
+	clrscr();
+	cout << "you win" << endl;
+}
+
 void open(int x, int y) {
 	if (!isInRange(x, y) || opened[y][x] || mines[y][x] == MINE) {
 		return;
@@ -150,7 +166,7 @@ void open(int x, int y) {
 	open(x + 1, y + 1);
 }
 
-void main() {
+void game() {
 	setColor(WHITE);
 	srand(time(NULL));
 	clrscr();
@@ -182,9 +198,9 @@ void main() {
 
 
 	bool done = false;
-	while (!done){
+	while (!done) {
 		char t = getch();
-		if (t == 's'){
+		if (t == 's') {
 			gotoxy(wherex(), wherey() + 1);
 		}
 		if (t == 'w') {
@@ -202,21 +218,41 @@ void main() {
 			}
 			else {
 				open((wherex() - 1) / 2, wherey());
-				int currentX = wherex();
-				int currentY = wherey();
-				clrscr();
-				printer2();
-				gotoxy(currentX, currentY);
+				if (isWin() == true) {
+					win();
+				}
+				else {
+					int currentX = wherex();
+					int currentY = wherey();
+					clrscr();
+					printer2();
+					gotoxy(currentX, currentY);
+				}
 			}
-			
-			
-				
+
+
+
 		}
 	}
 	fail();
 	getch();
+}
 
-	
+void welcome() {
+	cout << "this game is called Mines." << endl;
+	cout << "the rules are simple:" << endl;
+	cout << "you move with A D S W." << endl << "and you open with Space." << endl;
+	cout << "if you opened a Mine, you failed" << endl;
+	cout << "if you didn't opened a mine, there will be a number." << endl;
+	cout << "this number means how many mines there are near to this number" << endl;
+	cout << "you win if you opened all the numbers" << endl << endl << endl;
+	cout << "press any key to continue...";
+}
+
+void main() {
+	welcome();
+	getch();
+	game();
 }
 	
 
