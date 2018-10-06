@@ -7,13 +7,14 @@
 using namespace std;
 
 #define BOARD_SIZE 10
-#define NUM_MINES 1
+#define NUM_MINES 10
 #define MINE 9
 #define NO_MINES 0
 #define TMP_NO_MINES 10
 
 int mines[BOARD_SIZE][BOARD_SIZE];
 bool opened[BOARD_SIZE][BOARD_SIZE];
+bool flag[BOARD_SIZE][BOARD_SIZE];
 
 bool isNoMine(int x, int y) {
 	return mines[y][x] == NO_MINES;
@@ -64,7 +65,16 @@ bool isWin() {
 	return true;
 }
 
-void printer() {
+void resetFlag() {
+	for (int y = 0; y < BOARD_SIZE; y++) {
+		for (int x = 0; x < BOARD_SIZE; x++) {
+			flag[y][x] = false;
+		}
+	}
+
+}
+
+/*void printer() {
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
 
@@ -78,12 +88,12 @@ void printer() {
 		}
 		cout << endl;
 	}
-}
+}*/
 
 void printer2() {
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
-
+			setColor(flag[y][x] == true ? RED : WHITE);
 			if (mines[y][x] != MINE) {
 				if (opened[y][x] == true) {
 					cout << " " << mines[y][x];
@@ -105,6 +115,7 @@ void printer2() {
 			}
 		}
 		cout << endl;
+		setColor(WHITE);
 	}
 }
 
@@ -120,6 +131,14 @@ void reset() {
 			opened[y][x] = false;
 		}
 	}
+}
+
+void redraw() {
+	int currentX = wherex();
+	int currentY = wherey();
+	clrscr();
+	printer2();
+	gotoxy(currentX, currentY);
 }
 
 void fail() {
@@ -200,6 +219,22 @@ void game() {
 	bool done = false;
 	while (!done) {
 		char t = getch();
+		if (t == -32) {
+			switch (getch()) {
+				case 80:
+					gotoxy(wherex(), wherey() + 1);
+					break;
+				case 72:
+					gotoxy(wherex(), wherey() - 1);
+					break;
+				case 75:
+					gotoxy(wherex() - 2, wherey());
+					break;
+				case 77:
+					gotoxy(wherex() + 2, wherey());
+					break;
+			}
+		}
 		if (t == 's') {
 			gotoxy(wherex(), wherey() + 1);
 		}
@@ -212,6 +247,11 @@ void game() {
 		if (t == 'd') {
 			gotoxy(wherex() + 2, wherey());
 		}
+
+		if (t == 'q') {
+			flag[wherey()][(wherex() - 1) / 2] = true;
+			redraw();
+		}
 		if (t == ' ') {
 			if (mines[wherey()][(wherex() - 1) / 2] == MINE) {
 				done = true;
@@ -222,11 +262,7 @@ void game() {
 					win();
 				}
 				else {
-					int currentX = wherex();
-					int currentY = wherey();
-					clrscr();
-					printer2();
-					gotoxy(currentX, currentY);
+					redraw();
 				}
 			}
 
@@ -241,11 +277,12 @@ void game() {
 void welcome() {
 	cout << "this game is called Mines." << endl;
 	cout << "the rules are simple:" << endl;
-	cout << "you move with A D S W." << endl << "and you open with Space." << endl;
+	cout << "you move with the arraws." << endl << "and you open with Space." << endl;
 	cout << "if you opened a Mine, you failed" << endl;
 	cout << "if you didn't opened a mine, there will be a number." << endl;
 	cout << "this number means how many mines there are near to this number" << endl;
-	cout << "you win if you opened all the numbers" << endl << endl << endl;
+	cout << "you win if you opened all the numbers" << endl;
+	cout << "you press Q to tell yourself that this is a main" << endl << endl << endl;
 	cout << "press any key to continue...";
 }
 
